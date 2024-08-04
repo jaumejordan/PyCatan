@@ -113,8 +113,8 @@ class AdrianHerasAgent(AgentInterface):
                         # La juega
                         return self.development_cards_hand.select_card_by_id(self.development_cards_hand.hand[i].id)
 
-        gives = Materials()
-        receives = Materials()
+        gives = Materials(0,0,0,0,0)
+        receives = Materials(0,0,0,0,0)
 
         # No pide nada porque puede hacer una ciudad
         if self.town_number >= 1 and self.hand.resources.has_this_more_materials(BuildConstants.CITY):
