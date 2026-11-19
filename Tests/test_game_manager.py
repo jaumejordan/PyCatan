@@ -93,6 +93,21 @@ class TestGameManager:
         assert self.game_manager.agent_manager.players[2]['player'].hand.resources.wool == 0
         assert self.game_manager.agent_manager.players[2]['resources'].resources.wool == 0
 
+    def test_give_resources_after_initial_placement(self):
+        # Tras la colocación inicial 'hand' y 'resources' son el mismo objeto: no se puede dar el material dos veces
+        self.game_manager.reset_game_values()
+        player = self.game_manager.agent_manager.players[0]
+        player['player'].on_game_start = lambda board: (13, 14)
+        self.game_manager.on_game_start_build_towns_and_roads(0)
+        assert player['player'].hand is player['resources']
+
+        cereal = player['resources'].resources.cereal
+        self.game_manager.last_dice_roll = 9  # El nodo 13 es adyacente a un cereal con un 9
+        self.game_manager.give_resources()
+
+        assert player['resources'].resources.cereal == cereal + 1
+        assert player['player'].hand.resources.cereal == cereal + 1
+
     def test_send_trade_to_everyone(self):
         self.game_manager.reset_game_values()
         trade = TradeOffer(Materials(1, 0, 0, 0, 0), Materials(0, 0, 1, 0, 1))
