@@ -74,11 +74,12 @@ class GameManager:
                         # Si tiene ciudad se dan 2 en lugar de 1 material
 
                         if self.board.nodes[node]['has_city']:
-                            player['player'].hand.add_material(terrain['terrain_type'], 2)
                             player['resources'].add_material(terrain['terrain_type'], 2)
                         else:
-                            player['player'].hand.add_material(terrain['terrain_type'], 1)
                             player['resources'].add_material(terrain['terrain_type'], 1)
+                        # Se suma solo a 'resources' y se sincroniza la mano, como en el resto del motor. Tras la
+                        # colocación inicial 'hand' y 'resources' son el mismo objeto y sumar a los dos duplicaba.
+                        player['player'].hand = player['resources']
         return
 
     def _give_all_resources(self):
